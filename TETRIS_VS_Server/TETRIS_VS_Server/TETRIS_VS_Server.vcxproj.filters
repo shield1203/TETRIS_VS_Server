@@ -31,8 +31,20 @@
     <Filter Include="Utility\01.GameRoom">
       <UniqueIdentifier>{8bb65cb8-a6e6-4883-b3c1-c0e66944a300}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utility\02.GameUser">
-      <UniqueIdentifier>{0b93f4ad-f4ca-4cda-a4fa-53a77291000b}</UniqueIdentifier>
+    <Filter Include="Utility\02.UserManager">
+      <UniqueIdentifier>{fafacb87-aa05-457f-80ac-392ff68a381a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Systems">
+      <UniqueIdentifier>{dc1af193-1ac1-4175-a434-e55936ba323c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Systems\01.LobbySystem">
+      <UniqueIdentifier>{6197d535-0ab5-4f79-87ba-28b9805dde8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Systems\02.RoomSystem">
+      <UniqueIdentifier>{b5829e54-8f3b-4469-ba54-a55a194def15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Systems\03.PlayGameSystem">
+      <UniqueIdentifier>{c3545d66-6cf7-4fa3-9d99-58d60f998278}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -54,8 +66,11 @@
     <ClInclude Include="DefineFunction.h">
       <Filter>00.Define</Filter>
     </ClInclude>
-    <ClInclude Include="GameUser.h">
-      <Filter>Utility\02.GameUser</Filter>
+    <ClInclude Include="UserManager.h">
+      <Filter>Utility\02.UserManager</Filter>
+    </ClInclude>
+    <ClInclude Include="LobbySystem.h">
+      <Filter>03.Systems\01.LobbySystem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -71,8 +86,11 @@
     <ClCompile Include="GameRoom.cpp">
       <Filter>Utility\01.GameRoom</Filter>
     </ClCompile>
-    <ClCompile Include="GameUser.cpp">
-      <Filter>Utility\02.GameUser</Filter>
+    <ClCompile Include="UserManager.cpp">
+      <Filter>Utility\02.UserManager</Filter>
+    </ClCompile>
+    <ClCompile Include="LobbySystem.cpp">
+      <Filter>03.Systems\01.LobbySystem</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

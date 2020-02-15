@@ -1,12 +1,15 @@
 #include "stdafx.h"
 #include "ServerSystem.h"
+#include "UserManager.h"
 
 ServerSystem::ServerSystem()
 {
+	m_userManager = UserManager::getInstance();
 }
 
 ServerSystem::~ServerSystem()
 {
+	SafeDelete(m_userManager);
 }
 
 SOCKET ServerSystem::SetTCPServer()
@@ -51,10 +54,12 @@ void ServerSystem::Process()
 	WSADATA m_wsadata;
 	WSAStartup(MAKEWORD(2, 2), &m_wsadata);//윈속 초기화       
 
-	SOCKET m_acceptSocket;
 	m_acceptSocket = SetTCPServer();
 
-	printf("[TETRIS_VS] 서버 시작");
+	printf("[TETRIS_VS] 서버 시작\n\n");
+
+	unsigned int threadID = 0;
+	HANDLE threadAccept = (HANDLE)_beginthreadex(NULL, 0, AcceptUser, (void*)this, 0, (unsigned*)&threadID);
 
 	while (true)
 	{
@@ -64,7 +69,32 @@ void ServerSystem::Process()
 	WSACleanup();
 }
 
-void ServerSystem::AcceptUser()
+unsigned int WINAPI ServerSystem::AcceptUser(void* param)
 {
+	ServerSystem* m_serverSystem = (ServerSystem*)param;
 
+	while (true)
+	{
+		GameUser* gameUser = new GameUser;
+
+		int len = sizeof(gameUser->cliaddr);
+
+		gameUser->socket = accept((SOCKET)m_serverSystem->m_acceptSocket, (SOCKADDR*)&gameUser->cliaddr, &len);//연결 수락
+		if (gameUser->socket == -1)
+		{
+			SafeDelete(gameUser);
+			perror("Accept 실패\n");
+			break;
+		}
+
+		printf("%s:%d의 연결 요청 수락\n", inet_ntoa(gameUser->cliaddr.sin_addr), ntohs(gameUser->cliaddr.sin_port));
+
+		gameUser->state = LOBBY;
+		m_serverSystem->m_userManager->m_userList.push_back(gameUser);
+	}
+
+	closesocket(m_serverSystem->m_acceptSocket);//소켓 닫기
+
+	return 0;
 }
+

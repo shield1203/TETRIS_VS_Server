@@ -85,7 +85,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_WINSOCK_DEPRECATED_NO_WARNINGS; _CRT_SECURE_NO_WARNINGS;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -141,17 +141,19 @@
     <ClInclude Include="Define.h" />
     <ClInclude Include="DefineFunction.h" />
     <ClInclude Include="GameRoom.h" />
-    <ClInclude Include="GameUser.h" />
+    <ClInclude Include="LobbySystem.h" />
     <ClInclude Include="RoomManager.h" />
     <ClInclude Include="ServerSystem.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="UserManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameRoom.cpp" />
-    <ClCompile Include="GameUser.cpp" />
+    <ClCompile Include="LobbySystem.cpp" />
     <ClCompile Include="RoomManager.cpp" />
     <ClCompile Include="ServerStart.cpp" />
     <ClCompile Include="ServerSystem.cpp" />
+    <ClCompile Include="UserManager.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -19,7 +19,8 @@ static void SageDelete_Array(T*& p)
 	p = nullptr;
 }
 
-IN_ADDR GetDefaultMyIP()
+// Get_My_IP
+static IN_ADDR GetDefaultMyIP()
 {
 	char m_localhostname[MAX_PATH];
 	IN_ADDR addr = { 0, };
