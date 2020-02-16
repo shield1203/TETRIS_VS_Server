@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="00.Define">
+      <UniqueIdentifier>{2031da80-482d-4ba9-b52a-bd3ec6d9455b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.ServerStart">
+      <UniqueIdentifier>{f1c0b1fe-6631-4998-a761-779c243ccdd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.ServerSystem">
+      <UniqueIdentifier>{3e74124a-24c2-4771-87b6-e12e70644441}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{a2e91425-8fbe-4d84-a215-3305d16141ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\00.RoomManager">
+      <UniqueIdentifier>{5da2ee2e-a1ca-470c-9cf5-ebed2af11e29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\01.GameRoom">
+      <UniqueIdentifier>{8bb65cb8-a6e6-4883-b3c1-c0e66944a300}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\02.UserManager">
+      <UniqueIdentifier>{fafacb87-aa05-457f-80ac-392ff68a381a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Systems">
+      <UniqueIdentifier>{dc1af193-1ac1-4175-a434-e55936ba323c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Systems\01.LobbySystem">
+      <UniqueIdentifier>{6197d535-0ab5-4f79-87ba-28b9805dde8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Systems\02.RoomSystem">
+      <UniqueIdentifier>{b5829e54-8f3b-4469-ba54-a55a194def15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Systems\03.PlayGameSystem">
+      <UniqueIdentifier>{c3545d66-6cf7-4fa3-9d99-58d60f998278}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Define.h">
+      <Filter>00.Define</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerSystem.h">
+      <Filter>02.ServerSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomManager.h">
+      <Filter>Utility\00.RoomManager</Filter>
+    </ClInclude>
+    <ClInclude Include="GameRoom.h">
+      <Filter>Utility\01.GameRoom</Filter>
+    </ClInclude>
+    <ClInclude Include="DefineFunction.h">
+      <Filter>00.Define</Filter>
+    </ClInclude>
+    <ClInclude Include="UserManager.h">
+      <Filter>Utility\02.UserManager</Filter>
+    </ClInclude>
+    <ClInclude Include="LobbySystem.h">
+      <Filter>03.Systems\01.LobbySystem</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ServerStart.cpp">
+      <Filter>01.ServerStart</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerSystem.cpp">
+      <Filter>02.ServerSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="RoomManager.cpp">
+      <Filter>Utility\00.RoomManager</Filter>
+    </ClCompile>
+    <ClCompile Include="GameRoom.cpp">
+      <Filter>Utility\01.GameRoom</Filter>
+    </ClCompile>
+    <ClCompile Include="UserManager.cpp">
+      <Filter>Utility\02.UserManager</Filter>
+    </ClCompile>
+    <ClCompile Include="LobbySystem.cpp">
+      <Filter>03.Systems\01.LobbySystem</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
