@@ -1,5 +1,3 @@
-#include "stdafx.h"
-#include "GameUser.h"
 #include "SystemFrame.h"
 #include "LobbySystem.h"
 
@@ -35,16 +33,65 @@ void LobbySystem::Recv()
 	else
 	{
 		m_gameUser->m_state = CLOSE_CONNECT;
-		printf("%s:%d와 통신 종료\n", inet_ntoa(m_gameUser->m_cliaddr.sin_addr), ntohs(m_gameUser->m_cliaddr.sin_port));
 	}
+}
+
+bool LobbySystem::CheckPacket()
+{
+	if (m_gameUser->m_state == CLOSE_CONNECT)
+	{
+		printf("%s:%d와 통신 종료\n", inet_ntoa(m_gameUser->m_cliaddr.sin_addr), ntohs(m_gameUser->m_cliaddr.sin_port));
+		return false;
+	}
+
+	switch (m_lobbyPacket->lobby)
+	{
+	case LOBBY_IDLE:
+		break;
+	case LOBBY_CREATE_ROOM:
+		m_gameUser->m_state = IN_ROOM;
+
+		m_roomManager->CreateGameRoom(m_gameUser->m_gameRoom);
+		m_lobbyPacket->b_enterRoom = true;
+		m_lobbyPacket->n_roomNum = m_gameUser->m_gameRoom->m_roomNum;
+
+		printf("%s:%d 가 게임룸 %d 생성\n", 
+			inet_ntoa(m_gameUser->m_cliaddr.sin_addr), ntohs(m_gameUser->m_cliaddr.sin_port), m_lobbyPacket->n_roomNum);
+		break;
+	case LOBBY_ENTER_ROOM:
+		if (m_roomManager->EnterRoom(m_lobbyPacket->n_roomNum, m_gameUser->m_gameRoom))
+		{
+			m_gameUser->m_state = IN_ROOM;
+
+			m_lobbyPacket->b_enterRoom = true;
+
+			printf("%s:%d 가 %d게임룸 입장\n", 
+				inet_ntoa(m_gameUser->m_cliaddr.sin_addr), ntohs(m_gameUser->m_cliaddr.sin_port), m_lobbyPacket->n_roomNum);
+		}
+		else
+		{
+			m_lobbyPacket->b_enterRoom = false;
+
+			printf("%s:%d 가 %d게임룸 입장실패\n", 
+				inet_ntoa(m_gameUser->m_cliaddr.sin_addr), ntohs(m_gameUser->m_cliaddr.sin_port), m_lobbyPacket->n_roomNum);
+		}
+		break;
+	}
+
+	return true;
 }
 
 void LobbySystem::Send()
 {
-	// 방 목록 보냄
-
-	// 방개수
-	// 방정보
+	// 방 수, 방 진입여부, 
+	m_lobbyPacket->n_roomCount = m_roomManager->m_roomList.size();
+	send(m_gameUser->m_socket, (char*)m_lobbyPacket, sizeof(LobbyPacket), 0);
+	
+	// 방 리스트
+	for (auto i : m_roomManager->m_roomList)
+	{
+		send(m_gameUser->m_socket, (char*)i, sizeof(GameRoom), 0);
+	}
 }
 
 unsigned int WINAPI LobbySystem::Communication(void* lobbySystem)
@@ -53,22 +100,19 @@ unsigned int WINAPI LobbySystem::Communication(void* lobbySystem)
 
 	m_lobbySystem->m_gameUser->bOn = true;
 
-	while (true)
+	while (m_lobbySystem->m_gameUser->m_state == LOBBY)
 	{
 		m_lobbySystem->Recv();
 
-		if (m_lobbySystem->m_gameUser->m_state == CLOSE_CONNECT)
+		if (!m_lobbySystem->CheckPacket())
 		{
 			break;
 		}
 
 		m_lobbySystem->Send();
-
-		if (m_lobbySystem->m_gameUser->m_state == IN_ROOM)
-		{
-			break;
-		}
 	}
 
 	m_lobbySystem->m_gameUser->bOn = false;
+
+	return 0;
 }

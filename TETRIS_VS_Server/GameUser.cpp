@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "GameUser.h"
 
+#include "RoomManager.h"
 #include "SystemFrame.h"
 #include "LobbySystem.h"
 //#include "RoomSystem.h"

@@ -1,11 +1,16 @@
 #pragma once
+#include "stdafx.h"
+#include "GameUser.h"
+#include "RoomManager.h"
 
 class SystemFrame
 {
 protected:
 	GameUser* m_gameUser = nullptr;
+	RoomManager* m_roomManager = nullptr;
 public:
 	virtual void Update(GameUser&) { };
-	virtual void Recv(SOCKET) { };
-	virtual void Send(SOCKET) { };
+	virtual void Recv() { };
+	virtual bool CheckPacket() { return false; };
+	virtual void Send() { };
 };

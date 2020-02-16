@@ -140,20 +140,19 @@
   <ItemGroup>
     <ClInclude Include="Define.h" />
     <ClInclude Include="DefineFunction.h" />
-    <ClInclude Include="GameRoom.h" />
     <ClInclude Include="LobbySystem.h" />
     <ClInclude Include="RoomManager.h" />
     <ClInclude Include="ServerSystem.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="UserManager.h" />
+    <ClInclude Include="GameUser.h" />
+    <ClInclude Include="SystemFrame.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GameRoom.cpp" />
+    <ClCompile Include="GameUser.cpp" />
     <ClCompile Include="LobbySystem.cpp" />
     <ClCompile Include="RoomManager.cpp" />
     <ClCompile Include="ServerStart.cpp" />
     <ClCompile Include="ServerSystem.cpp" />
-    <ClCompile Include="UserManager.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

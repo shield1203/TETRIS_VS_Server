@@ -28,23 +28,23 @@
     <Filter Include="Utility\00.RoomManager">
       <UniqueIdentifier>{5da2ee2e-a1ca-470c-9cf5-ebed2af11e29}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utility\01.GameRoom">
-      <UniqueIdentifier>{8bb65cb8-a6e6-4883-b3c1-c0e66944a300}</UniqueIdentifier>
+    <Filter Include="03.GameUser">
+      <UniqueIdentifier>{332b4b5e-a463-4e3b-9cce-d94c4053b8d2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utility\02.UserManager">
-      <UniqueIdentifier>{fafacb87-aa05-457f-80ac-392ff68a381a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.Systems">
+    <Filter Include="04.Systems">
       <UniqueIdentifier>{dc1af193-1ac1-4175-a434-e55936ba323c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03.Systems\01.LobbySystem">
+    <Filter Include="04.Systems\01.LobbySystem">
       <UniqueIdentifier>{6197d535-0ab5-4f79-87ba-28b9805dde8e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03.Systems\02.RoomSystem">
+    <Filter Include="04.Systems\02.RoomSystem">
       <UniqueIdentifier>{b5829e54-8f3b-4469-ba54-a55a194def15}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03.Systems\03.PlayGameSystem">
+    <Filter Include="04.Systems\03.PlayGameSystem">
       <UniqueIdentifier>{c3545d66-6cf7-4fa3-9d99-58d60f998278}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Systems\00.SystemFrame">
+      <UniqueIdentifier>{33d1d3bc-db06-4b69-a017-e4527936e110}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -60,17 +60,17 @@
     <ClInclude Include="RoomManager.h">
       <Filter>Utility\00.RoomManager</Filter>
     </ClInclude>
-    <ClInclude Include="GameRoom.h">
-      <Filter>Utility\01.GameRoom</Filter>
-    </ClInclude>
     <ClInclude Include="DefineFunction.h">
       <Filter>00.Define</Filter>
     </ClInclude>
-    <ClInclude Include="UserManager.h">
-      <Filter>Utility\02.UserManager</Filter>
-    </ClInclude>
     <ClInclude Include="LobbySystem.h">
-      <Filter>03.Systems\01.LobbySystem</Filter>
+      <Filter>04.Systems\01.LobbySystem</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUser.h">
+      <Filter>03.GameUser</Filter>
+    </ClInclude>
+    <ClInclude Include="SystemFrame.h">
+      <Filter>04.Systems\00.SystemFrame</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -83,14 +83,11 @@
     <ClCompile Include="RoomManager.cpp">
       <Filter>Utility\00.RoomManager</Filter>
     </ClCompile>
-    <ClCompile Include="GameRoom.cpp">
-      <Filter>Utility\01.GameRoom</Filter>
-    </ClCompile>
-    <ClCompile Include="UserManager.cpp">
-      <Filter>Utility\02.UserManager</Filter>
-    </ClCompile>
     <ClCompile Include="LobbySystem.cpp">
-      <Filter>03.Systems\01.LobbySystem</Filter>
+      <Filter>04.Systems\01.LobbySystem</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUser.cpp">
+      <Filter>03.GameUser</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
