@@ -1,9 +1,0 @@
-﻿  common.cpp
-F:\TETRIS_VS\EchoClient00\EchoClient00\common.cpp(10,1): warning C4996: 'gethostbyname': Use getaddrinfo() or GetAddrInfoW() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\um\WinSock2.h(2219): message : 'gethostbyname' 선언을 참조하십시오.
-  Cient.cpp
-F:\TETRIS_VS\EchoClient00\EchoClient00\Cient.cpp(28,1): warning C4996: 'inet_addr': Use inet_pton() or InetPton() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\um\WinSock2.h(1831): message : 'inet_addr' 선언을 참조하십시오.
-F:\TETRIS_VS\EchoClient00\EchoClient00\Cient.cpp(46,1): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(1274): message : 'scanf' 선언을 참조하십시오.
-  EchoClient00.vcxproj -> F:\TETRIS_VS\EchoClient00\Debug\EchoClient00.exe

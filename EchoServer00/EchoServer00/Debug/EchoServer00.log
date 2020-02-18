@@ -1,6 +1,0 @@
-﻿  Server.cpp
-F:\TETRIS_VS\EchoServer00\EchoServer00\Server.cpp(80,1): warning C4996: 'inet_ntoa': Use inet_ntop() or InetNtop() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\um\WinSock2.h(1849): message : 'inet_ntoa' 선언을 참조하십시오.
-F:\TETRIS_VS\EchoServer00\EchoServer00\Server.cpp(111,1): warning C4996: 'inet_ntoa': Use inet_ntop() or InetNtop() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\um\WinSock2.h(1849): message : 'inet_ntoa' 선언을 참조하십시오.
-  EchoServer00.vcxproj -> F:\TETRIS_VS\EchoServer00\Debug\EchoServer00.exe

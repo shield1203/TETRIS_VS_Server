@@ -1,15 +1,53 @@
 #include "stdafx.h"
 #include "ServerSystem.h"
-#include "UserManager.h"
+
+#include "GameUser.h"
+#include "SystemFrame.h"
 
 ServerSystem::ServerSystem()
 {
-	m_userManager = UserManager::getInstance();
 }
 
 ServerSystem::~ServerSystem()
 {
-	SafeDelete(m_userManager);
+	for (auto i : m_userList)
+	{
+		SafeDelete(i);
+	}
+	m_userList.clear();
+}
+
+void ServerSystem::Process()
+{
+	WSADATA m_wsadata;
+	WSAStartup(MAKEWORD(2, 2), &m_wsadata);//윈속 초기화       
+
+	m_acceptSocket = SetTCPServer();
+
+	printf("[TETRIS_VS] 서버 시작\n\n");
+
+	unsigned int threadID = 0;
+	HANDLE threadAccept = (HANDLE)_beginthreadex(NULL, 0, AcceptUser, (void*)this, 0, (unsigned*)&threadID);
+
+		
+	while (true)
+	{
+		for (auto i = m_userList.begin(); i != m_userList.end();)
+		{
+			if ((*i)->GetUserState() != CLOSE_CONNECT)
+			{
+				(*i)->Update();
+				i++;
+			}
+			else
+			{
+				SafeDelete(*i);
+				i = m_userList.erase(i++);
+			}
+		}
+	}
+
+	WSACleanup();
 }
 
 SOCKET ServerSystem::SetTCPServer()
@@ -49,52 +87,32 @@ SOCKET ServerSystem::SetTCPServer()
 	return sock;
 }
 
-void ServerSystem::Process()
-{
-	WSADATA m_wsadata;
-	WSAStartup(MAKEWORD(2, 2), &m_wsadata);//윈속 초기화       
-
-	m_acceptSocket = SetTCPServer();
-
-	printf("[TETRIS_VS] 서버 시작\n\n");
-
-	unsigned int threadID = 0;
-	HANDLE threadAccept = (HANDLE)_beginthreadex(NULL, 0, AcceptUser, (void*)this, 0, (unsigned*)&threadID);
-
-	while (true)
-	{
-
-	}
-
-	WSACleanup();
-}
-
 unsigned int WINAPI ServerSystem::AcceptUser(void* param)
 {
 	ServerSystem* m_serverSystem = (ServerSystem*)param;
 
 	while (true)
 	{
-		GameUser* gameUser = new GameUser;
+		SOCKET userSoket;
+		SOCKADDR_IN cliaddr;
 
-		int len = sizeof(gameUser->cliaddr);
+		int len = sizeof(cliaddr);
 
-		gameUser->socket = accept((SOCKET)m_serverSystem->m_acceptSocket, (SOCKADDR*)&gameUser->cliaddr, &len);//연결 수락
-		if (gameUser->socket == -1)
+		userSoket = accept((SOCKET)m_serverSystem->m_acceptSocket, (SOCKADDR*)&cliaddr, &len);//연결 수락
+		if (userSoket == -1)
 		{
-			SafeDelete(gameUser);
+			closesocket(userSoket);
 			perror("Accept 실패\n");
 			break;
 		}
 
-		printf("%s:%d의 연결 요청 수락\n", inet_ntoa(gameUser->cliaddr.sin_addr), ntohs(gameUser->cliaddr.sin_port));
+		printf("%s:%d의 연결 요청 수락\n", inet_ntoa(cliaddr.sin_addr), ntohs(cliaddr.sin_port));
 
-		gameUser->state = LOBBY;
-		m_serverSystem->m_userManager->m_userList.push_back(gameUser);
+		GameUser* pAddUser = new GameUser(userSoket, cliaddr);
+		m_serverSystem->m_userList.push_back(pAddUser);
 	}
 
 	closesocket(m_serverSystem->m_acceptSocket);//소켓 닫기
 
 	return 0;
 }
-
