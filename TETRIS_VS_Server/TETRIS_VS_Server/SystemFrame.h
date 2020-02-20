@@ -5,11 +5,11 @@
 
 class SystemFrame
 {
-protected:
+public:
 	GameUser* m_gameUser = nullptr;
 	RoomManager* m_roomManager = nullptr;
 public:
-	virtual void Update(GameUser&) { };
+	virtual void Update(GameUser*) { };
 	virtual void Recv() { };
 	virtual bool CheckPacket() { return false; };
 	virtual void Send() { };

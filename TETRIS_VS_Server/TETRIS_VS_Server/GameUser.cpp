@@ -34,6 +34,8 @@ void GameUser::Update()
 {
 	if (!bOn)
 	{
+		bOn = true;
+
 		if (m_systemFrame != nullptr)
 		{
 			SafeDelete(m_systemFrame);
@@ -63,7 +65,7 @@ void GameUser::StartThread()
 		CloseHandle(m_threadHandle);
 	}
 
-	m_systemFrame->Update(*this);
+	m_systemFrame->Update(this);
 }
 
 USER_STATE GameUser::GetUserState()

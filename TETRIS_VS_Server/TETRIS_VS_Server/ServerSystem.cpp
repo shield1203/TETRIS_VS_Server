@@ -29,12 +29,11 @@ void ServerSystem::Process()
 	unsigned int threadID = 0;
 	HANDLE threadAccept = (HANDLE)_beginthreadex(NULL, 0, AcceptUser, (void*)this, 0, (unsigned*)&threadID);
 
-		
 	while (true)
 	{
 		for (auto i = m_userList.begin(); i != m_userList.end();)
 		{
-			if ((*i)->GetUserState() != CLOSE_CONNECT)
+			if ((*i)->GetUserState() != USER_STATE::CLOSE_CONNECT)
 			{
 				(*i)->Update();
 				i++;

@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "SystemFrame.h"
 #include "LobbySystem.h"
 
@@ -9,9 +10,10 @@ LobbySystem::~LobbySystem()
 {
 }
 
-void LobbySystem::Update(GameUser& gameUser)
+void LobbySystem::Update(GameUser* gameUser)
 {
-	m_gameUser = &gameUser;
+	m_gameUser = gameUser;
+	m_roomManager = RoomManager::getInstance();
 
 	unsigned int threadID = 0;
 	m_gameUser->m_threadHandle = (HANDLE)_beginthreadex(NULL, 0, Communication, (void*)this, 0, (unsigned*)&threadID);
@@ -92,13 +94,12 @@ void LobbySystem::Send()
 	{
 		send(m_gameUser->m_socket, (char*)i, sizeof(GameRoom), 0);
 	}
+	int k = 0;
 }
 
 unsigned int WINAPI LobbySystem::Communication(void* lobbySystem)
 {
 	LobbySystem* m_lobbySystem = (LobbySystem*)lobbySystem;
-
-	m_lobbySystem->m_gameUser->bOn = true;
 
 	while (m_lobbySystem->m_gameUser->m_state == USER_STATE::LOBBY)
 	{

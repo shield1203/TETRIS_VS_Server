@@ -2,7 +2,7 @@
 
 struct GameRoom
 {
-	int m_roomNum;
+	int m_roomNum = 0;
 	int m_userCount = 0;
 };
 class RoomManager
