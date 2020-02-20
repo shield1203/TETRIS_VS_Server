@@ -33,9 +33,10 @@ void ServerSystem::Process()
 	{
 		for (auto i = m_userList.begin(); i != m_userList.end();)
 		{
-			if ((*i)->GetUserState() != USER_STATE::CLOSE_CONNECT)
+			(*i)->Update();
+
+			if ((*i)->IsConnect())
 			{
-				(*i)->Update();
 				i++;
 			}
 			else

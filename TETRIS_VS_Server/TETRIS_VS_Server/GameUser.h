@@ -10,6 +10,7 @@ class GameUser
 {
 private:
 	bool bOn = false;
+	bool bSocketConnect = true;
 
 	SOCKET m_socket;
 	SOCKADDR_IN m_cliaddr = { 0 };
@@ -30,6 +31,7 @@ public:
 	void StartThread();
 
 	USER_STATE GetUserState();
+	bool IsConnect();
 
 	GameUser(SOCKET, SOCKADDR_IN);
 	~GameUser();

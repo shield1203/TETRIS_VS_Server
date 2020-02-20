@@ -43,6 +43,10 @@ void GameUser::Update()
 
 		switch (m_state)
 		{
+		case USER_STATE::CLOSE_CONNECT:
+			bSocketConnect = false;
+			return;
+			break;
 		case  USER_STATE::LOBBY:
 			m_systemFrame = new LobbySystem();
 			break;
@@ -71,4 +75,9 @@ void GameUser::StartThread()
 USER_STATE GameUser::GetUserState()
 {
 	return m_state;
+}
+
+bool GameUser::IsConnect()
+{
+	return bSocketConnect;
 }

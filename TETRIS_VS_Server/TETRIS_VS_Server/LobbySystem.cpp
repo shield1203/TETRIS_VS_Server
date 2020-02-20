@@ -94,7 +94,7 @@ void LobbySystem::Send()
 	{
 		send(m_gameUser->m_socket, (char*)i, sizeof(GameRoom), 0);
 	}
-	int k = 0;
+	int k = 0; // ....????????
 }
 
 unsigned int WINAPI LobbySystem::Communication(void* lobbySystem)
