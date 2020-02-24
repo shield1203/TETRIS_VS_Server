@@ -2,7 +2,7 @@
 
 #define PORT_NUM 21524
 #define BLOG_SIZE 5
-#define MAX_MSG_LEN 256
+#define MAX_MSG_LEN 512
 
 enum class USER_STATE : unsigned int { LOBBY, IN_ROOM, PLAY_GAME, CLOSE_CONNECT };
 
@@ -16,6 +16,7 @@ enum class USER_STATE : unsigned int { LOBBY, IN_ROOM, PLAY_GAME, CLOSE_CONNECT 
 //////////////
 #include <WinSock2.h>
 #include <process.h>
+#include <mutex>
 #include <string.h>
 #include <stdlib.h>
 #include <iostream>

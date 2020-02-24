@@ -2,9 +2,10 @@
 #include "GameUser.h"
 
 #include "RoomManager.h"
+#include "PacketManager.h"
 #include "SystemFrame.h"
 #include "LobbySystem.h"
-//#include "RoomSystem.h"
+#include "GameRoomSystem.h"
 //#include "Pl"
 
 GameUser::GameUser(SOCKET socket, SOCKADDR_IN cliaddr)
@@ -13,6 +14,7 @@ GameUser::GameUser(SOCKET socket, SOCKADDR_IN cliaddr)
 	this->m_cliaddr = cliaddr;
 
 	m_state = USER_STATE::LOBBY;
+	m_packetManager = new PacketManager();
 }
 
 GameUser::~GameUser()
@@ -28,6 +30,8 @@ GameUser::~GameUser()
 	{
 		CloseHandle(m_threadHandle);
 	}
+	
+	SafeDelete(m_packetManager);
 }
 
 void GameUser::Update()
@@ -51,7 +55,7 @@ void GameUser::Update()
 			m_systemFrame = new LobbySystem();
 			break;
 		case USER_STATE::IN_ROOM:
-			//m_systemFrame = new RoomSystem();
+			m_systemFrame = new GameRoomSystem();
 			break;
 		case USER_STATE::PLAY_GAME:
 			//m_systemFrame = new PlayGameSystem();
@@ -70,6 +74,21 @@ void GameUser::StartThread()
 	}
 
 	m_systemFrame->Update(this);
+}
+
+int GameUser::GetUserNum()
+{
+	return m_userNum;
+}
+
+void GameUser::SetUserNum(int userNum)
+{
+	m_userNum = userNum;
+}
+
+void GameUser::SetRoomNum(int roomNum)
+{
+	m_packetManager->m_lobbyPacket->n_roomNum = roomNum;
 }
 
 USER_STATE GameUser::GetUserState()

@@ -1,10 +1,14 @@
 #pragma once
+class GameUser;
+
+enum ROOM_MANAGER { FULL_USER_COUNT = 2 };
 
 struct GameRoom
 {
-	int m_roomNum = 0;
-	int m_userCount = 0;
+	int roomNum = 0;
+	list<GameUser*>gameUserList;
 };
+
 class RoomManager
 {
 private:
@@ -15,8 +19,10 @@ public:
 public:
 	static RoomManager* getInstance();
 
-	void CreateGameRoom(GameRoom*);
-	bool EnterRoom(int, GameRoom*);
+	void CreateGameRoom(GameUser*);
+	bool EnterRoom(int, GameUser*);
+	void ExitRoom(int, GameUser*);
+	void CheckRoom(GameRoom*);
 
 	~RoomManager();
 };

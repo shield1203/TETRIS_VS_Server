@@ -1,9 +1,9 @@
 #pragma once
 
-struct GameRoom;
 class SystemFrame;
+class PacketManager;
 class LobbySystem;
-//class RoomSystem
+class GameRoomSystem;
 //class PlayGameSystem;
 
 class GameUser
@@ -15,7 +15,8 @@ private:
 	SOCKET m_socket;
 	SOCKADDR_IN m_cliaddr = { 0 };
 
-	GameRoom* m_gameRoom = nullptr;
+	int m_userNum = 0;
+	PacketManager* m_packetManager = nullptr;
 
 	HANDLE m_threadHandle = nullptr;
 
@@ -24,12 +25,15 @@ private:
 	SystemFrame* m_systemFrame = nullptr;
 public:
 	friend LobbySystem;
-	//
+	friend GameRoomSystem;
 	//
 public:
 	void Update();
 	void StartThread();
 
+	int GetUserNum();
+	void SetUserNum(int);
+	void SetRoomNum(int);
 	USER_STATE GetUserState();
 	bool IsConnect();
 

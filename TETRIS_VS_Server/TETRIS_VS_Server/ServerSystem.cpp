@@ -2,6 +2,7 @@
 #include "ServerSystem.h"
 
 #include "GameUser.h"
+#include "RoomManager.h"
 #include "SystemFrame.h"
 
 ServerSystem::ServerSystem()
@@ -15,6 +16,9 @@ ServerSystem::~ServerSystem()
 		SafeDelete(i);
 	}
 	m_userList.clear();
+
+	RoomManager* m_roomManager = RoomManager::getInstance();
+	SafeDelete(m_roomManager);
 }
 
 void ServerSystem::Process()
@@ -109,6 +113,29 @@ unsigned int WINAPI ServerSystem::AcceptUser(void* param)
 		printf("%s:%d의 연결 요청 수락\n", inet_ntoa(cliaddr.sin_addr), ntohs(cliaddr.sin_port));
 
 		GameUser* pAddUser = new GameUser(userSoket, cliaddr);
+
+		int n_userNum = 0;
+		while (true)
+		{
+			bool b_num = true;
+			for (auto i : m_serverSystem->m_userList)
+			{
+				if (i->GetUserNum() == n_userNum)
+				{
+					b_num = false;
+					break;
+				}
+			}
+
+			if (b_num)
+			{
+				break;
+			}
+
+			n_userNum++;
+		}
+
+		pAddUser->SetUserNum(n_userNum);
 		m_serverSystem->m_userList.push_back(pAddUser);
 	}
 

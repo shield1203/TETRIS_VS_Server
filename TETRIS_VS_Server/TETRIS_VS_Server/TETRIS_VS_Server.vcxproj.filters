@@ -37,14 +37,17 @@
     <Filter Include="04.Systems\01.LobbySystem">
       <UniqueIdentifier>{6197d535-0ab5-4f79-87ba-28b9805dde8e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04.Systems\02.RoomSystem">
-      <UniqueIdentifier>{b5829e54-8f3b-4469-ba54-a55a194def15}</UniqueIdentifier>
-    </Filter>
     <Filter Include="04.Systems\03.PlayGameSystem">
       <UniqueIdentifier>{c3545d66-6cf7-4fa3-9d99-58d60f998278}</UniqueIdentifier>
     </Filter>
     <Filter Include="04.Systems\00.SystemFrame">
       <UniqueIdentifier>{33d1d3bc-db06-4b69-a017-e4527936e110}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Systems\02.GameRoomSystem">
+      <UniqueIdentifier>{b5829e54-8f3b-4469-ba54-a55a194def15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\01.PacketManager">
+      <UniqueIdentifier>{f2471a96-d9ab-401d-b335-0874ca84b7f0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -72,6 +75,12 @@
     <ClInclude Include="SystemFrame.h">
       <Filter>04.Systems\00.SystemFrame</Filter>
     </ClInclude>
+    <ClInclude Include="GameRoomSystem.h">
+      <Filter>04.Systems\02.GameRoomSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="PacketManager.h">
+      <Filter>Utility\01.PacketManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ServerStart.cpp">
@@ -88,6 +97,12 @@
     </ClCompile>
     <ClCompile Include="GameUser.cpp">
       <Filter>03.GameUser</Filter>
+    </ClCompile>
+    <ClCompile Include="GameRoomSystem.cpp">
+      <Filter>04.Systems\02.GameRoomSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="PacketManager.cpp">
+      <Filter>Utility\01.PacketManager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

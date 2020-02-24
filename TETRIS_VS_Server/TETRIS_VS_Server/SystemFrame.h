@@ -8,6 +8,7 @@ class SystemFrame
 public:
 	GameUser* m_gameUser = nullptr;
 	RoomManager* m_roomManager = nullptr;
+	mutex m_mutex;
 public:
 	virtual void Update(GameUser*) { };
 	virtual void Recv() { };
