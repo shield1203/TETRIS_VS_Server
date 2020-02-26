@@ -14,12 +14,12 @@ private:
 
 	USER_STATE m_state;
 	int m_userNum = 0;
-
-	PacketManager* m_packetManager = nullptr;
 	
 	SystemFrame* m_systemFrame = nullptr;
 
 	HANDLE m_threadHandle = nullptr;
+public:
+	PacketManager* m_packetManager = nullptr;
 public:
 	void Initialize();
 	void Recv();

@@ -1,36 +1,127 @@
 #include "stdafx.h"
 #include "PacketManager.h"
 #include "RoomManager.h"
+#include "GameUser.h"
 
 PacketManager::PacketManager()
 {
+	m_roomManager = RoomManager::getInstance();
+
 	m_packetData = new PacketData;
-	m_lobbyPacket = new LobbyPacket;
-	m_gameRoomPacket = new GameRoomPacket;
-	m_PlayGamePacket = new PlayGamePacket;
+	m_lobbyData = new LobbyData;
+	m_gameRoomData = new GameRoomData;
+	m_playGameData = new PlayGameData;
 }
 
 PacketManager::~PacketManager()
 {
-	SafeDelete(m_lobbyPacket);
-	SafeDelete(m_gameRoomPacket);
-	SafeDelete(m_PlayGamePacket);
+	SafeDelete(m_packetData);
+	SafeDelete(m_lobbyData);
+	SafeDelete(m_gameRoomData);
+	SafeDelete(m_playGameData);
 }
 
-void PacketManager::SetLobbyPacket(LobbyPacket* lobbyPacket)
+void PacketManager::CopyPacket(PacketData* packetData)
 {
-	m_lobbyPacket->b_enterRoom = lobbyPacket->b_enterRoom;
-	m_lobbyPacket->n_roomCount = lobbyPacket->n_roomCount;
-	m_lobbyPacket->n_roomNum = lobbyPacket->n_roomNum;
-	m_lobbyPacket->userReq = lobbyPacket->userReq;
+	m_packetData->userState = packetData->userState;
+	m_packetData->size = packetData->size;
+	strcpy(m_packetData->data, packetData->data);
 }
 
-void PacketManager::SetGameRoomPacket(GameRoomPacket* gameRoomPacket)
+void PacketManager::GetData(USER_STATE userState)
 {
-	m_gameRoomPacket->bGameStart = gameRoomPacket->bGameStart;
-	m_gameRoomPacket->bOn = gameRoomPacket->bOn;
-	m_gameRoomPacket->bOwner = gameRoomPacket->bOwner;
-	m_gameRoomPacket->bReady = gameRoomPacket->bReady;
-	m_gameRoomPacket->userNum = gameRoomPacket->userNum;
-	m_gameRoomPacket->userReq = gameRoomPacket->userReq;
+	switch (userState)
+	{
+	case USER_STATE::USER_LOBBY:
+		GetLobbyData();
+		break;
+	case USER_STATE::USER_GAME_ROOM:
+		GetGameRoomData();
+		break;
+	case USER_STATE::USER_PLAY_GAME:
+		GetPlayGameData(); // ¾ÆÁ÷
+		break;
+	}
+}
+
+void PacketManager::GetLobbyData()
+{
+	ZeroMemory(m_lobbyData, sizeof(LobbyData));
+	memcpy(m_lobbyData, m_packetData->data, sizeof(LobbyData));
+}
+
+void PacketManager::GetGameRoomData()
+{
+	ZeroMemory(m_gameRoomData, sizeof(GameRoomData));
+	memcpy(m_gameRoomData, m_packetData->data, sizeof(GameRoomData));
+}
+
+void PacketManager::GetPlayGameData()
+{
+	//ZeroMemory(m_gameRoomData, sizeof(GameRoomData));
+}
+
+void PacketManager::SetPacket(USER_STATE userState)
+{
+	switch (userState)
+	{
+	case USER_STATE::USER_LOBBY: 
+		SetLobbyData();
+		break;
+	case USER_STATE::USER_GAME_ROOM:
+		SetGameRoomData();
+		break;
+	case USER_STATE::USER_PLAY_GAME:
+		SetPlayGameData();
+		break;
+	}
+}
+
+void PacketManager::SetLobbyData()
+{
+	m_packetData->size = 0;
+
+	memcpy(m_packetData->data, m_lobbyData, sizeof(LobbyData));
+	m_packetData += static_cast<unsigned short>(sizeof(LobbyData));
+
+	for (auto roomList : m_roomManager->m_roomList)
+	{
+		memcpy(m_packetData->data + m_packetData->size, roomList, sizeof(GameRoom));
+		m_packetData->size += static_cast < unsigned short>(sizeof(GameRoom));
+	}
+}
+
+void PacketManager::SetGameRoomData()
+{
+	m_packetData->size = 0;
+
+	for (auto roomList : m_roomManager->m_roomList)
+	{
+		if (m_gameRoomData->roomNum == roomList->roomNum)
+		{
+			for (auto userList : roomList->gameUserList)
+			{
+				if (m_gameRoomData->userNum != userList->GetUserNum())
+				{
+					memcpy(m_packetData->data, userList->m_packetManager->m_packetData, sizeof(GameRoomData));
+					m_packetData += static_cast <unsigned short>(sizeof(GameRoomData));
+				}
+			}
+		}
+	}
+
+	if (m_packetData->size == 0)
+	{
+		GameRoomData* gameRoomData = new GameRoomData;
+		gameRoomData->userReq = USER_ROOM::ROOM_IDLE;
+		gameRoomData->bOn = false;
+
+		memcpy(m_packetData->data, gameRoomData, sizeof(GameRoomData));
+		m_packetData += static_cast <unsigned short>(sizeof(GameRoomData));
+	}
+}
+
+void PacketManager::SetPlayGameData()
+{
+
 }

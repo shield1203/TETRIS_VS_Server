@@ -1,7 +1,6 @@
 #pragma once
 class SystemFrame;
 class GameUser;
-struct GameRoomPacket;
 
 class GameRoomSystem : public SystemFrame
 {

@@ -15,7 +15,7 @@ GameUser::GameUser(SOCKET socket, SOCKADDR_IN cliaddr, int userNum)
 
 	m_userNum = userNum;
 
-	m_state = USER_STATE::LOBBY;
+	m_state = USER_STATE::USER_LOBBY;
 	m_packetManager = new PacketManager();
 
 	m_systemFrame = new LobbySystem();
@@ -25,15 +25,9 @@ GameUser::~GameUser()
 {
 	closesocket(m_socket);
 
-	if (m_systemFrame != nullptr)
-	{
-		SafeDelete(m_systemFrame);
-	}
+	SafeDelete(m_systemFrame);
 
-	if (m_threadHandle != nullptr)
-	{
-		CloseHandle(m_threadHandle);
-	}
+	CloseHandle(m_threadHandle);
 	
 	SafeDelete(m_packetManager);
 }
@@ -63,12 +57,27 @@ void GameUser::Initialize()
 
 void GameUser::Recv()
 {
+	char msg[MAX_MSG_LEN] = "";
+	int connectCheck = recv(m_socket, msg, sizeof(msg), 0);
 
+	if (connectCheck > 0)
+	{
+		msg[sizeof(PacketData)] = '\0';
+		PacketData* packetData = (PacketData*)msg;
+
+		m_packetManager->CopyPacket(packetData);
+		m_packetManager->GetData(m_packetManager->m_packetData->userState);
+	}
+	else
+	{
+		m_state = USER_STATE::CLOSE_CONNECT;
+	}
 }
 
 void GameUser::Send()
 {
-
+	m_packetManager->SetPacket(m_state);
+	send(m_socket, (char*)m_packetManager->m_packetData, sizeof(PacketData), 0);
 }
 
 int GameUser::GetUserNum()
@@ -81,4 +90,25 @@ bool GameUser::IsConnect()
 	bool bConnect = (m_state != USER_STATE::CLOSE_CONNECT);
 
 	return bConnect;
+}
+
+unsigned int WINAPI GameUser::Communication(void* gameUser)
+{
+	GameUser* pGameUser = (GameUser*)gameUser;
+
+	while (pGameUser->m_state != USER_STATE::CLOSE_CONNECT)
+	{
+		pGameUser->Initialize();
+
+		pGameUser->Recv();
+
+		if (pGameUser->m_state != USER_STATE::CLOSE_CONNECT)
+		{
+			pGameUser->m_systemFrame->CheckPacket(pGameUser->m_packetManager);
+
+			pGameUser->Send();
+		}
+	}
+
+	return 0;
 }

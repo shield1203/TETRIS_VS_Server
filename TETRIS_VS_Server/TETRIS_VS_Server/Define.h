@@ -2,7 +2,8 @@
 
 #define PORT_NUM 21524
 #define BLOG_SIZE 5
-#define MAX_MSG_LEN 512
+#define MAX_MSG_LEN 300
+#define MAX_DATA_LEN 256
 
 enum class USER_STATE : unsigned int { USER_LOBBY, USER_GAME_ROOM, USER_PLAY_GAME, CLOSE_CONNECT };
 
