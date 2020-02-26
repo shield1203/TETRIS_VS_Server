@@ -4,7 +4,7 @@
 #define BLOG_SIZE 5
 #define MAX_MSG_LEN 512
 
-enum class USER_STATE : unsigned int { LOBBY, IN_ROOM, PLAY_GAME, CLOSE_CONNECT };
+enum class USER_STATE : unsigned int { USER_LOBBY, USER_GAME_ROOM, USER_PLAY_GAME, CLOSE_CONNECT };
 
 /////////////
 // LINKING //

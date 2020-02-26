@@ -4,8 +4,8 @@
 
 PacketManager::PacketManager()
 {
+	m_packetData = new PacketData;
 	m_lobbyPacket = new LobbyPacket;
-	m_lobbySendPacket = new LobbySendPackt;
 	m_gameRoomPacket = new GameRoomPacket;
 	m_PlayGamePacket = new PlayGamePacket;
 }

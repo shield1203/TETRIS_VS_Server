@@ -1,8 +1,9 @@
 #pragma once
-struct GameRoom_Lobby
+typedef struct PacketData
 {
-	int roomNum = 0;
-	int userCount = 0;
+	USER_STATE userState;
+	unsigned short size = 0;
+	char data[256] = "";
 };
 
 // Lobby
@@ -10,16 +11,9 @@ enum class USER_LOBBY : unsigned int { LOBBY_IDLE, LOBBY_CREATE_ROOM, LOBBY_ENTE
 
 struct LobbyPacket
 {
-	bool b_enterRoom = true;
 	USER_LOBBY userReq = USER_LOBBY::LOBBY_IDLE;
-	int n_roomNum = 0;
-	int n_roomCount = 0;
-};
-
-struct LobbySendPackt
-{
-	LobbyPacket lobbyPacket;
-	GameRoom_Lobby gameRoom_lobby[20];
+	bool bEnterRoom = true;
+	int nRoomNum = 0;
 };
 
 // GameRoom
@@ -44,8 +38,8 @@ struct PlayGamePacket
 class PacketManager
 {
 public:
+	PacketData* m_packetData = nullptr;
 	LobbyPacket* m_lobbyPacket = nullptr;
-	LobbySendPackt* m_lobbySendPacket = nullptr;
 	GameRoomPacket* m_gameRoomPacket = nullptr;
 	PlayGamePacket* m_PlayGamePacket = nullptr;
 public:

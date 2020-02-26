@@ -8,13 +8,17 @@
 #include "GameRoomSystem.h"
 //#include "Pl"
 
-GameUser::GameUser(SOCKET socket, SOCKADDR_IN cliaddr)
+GameUser::GameUser(SOCKET socket, SOCKADDR_IN cliaddr, int userNum)
 {
 	this->m_socket = socket;
 	this->m_cliaddr = cliaddr;
 
+	m_userNum = userNum;
+
 	m_state = USER_STATE::LOBBY;
 	m_packetManager = new PacketManager();
+
+	m_systemFrame = new LobbySystem();
 }
 
 GameUser::~GameUser()
@@ -34,46 +38,37 @@ GameUser::~GameUser()
 	SafeDelete(m_packetManager);
 }
 
-void GameUser::Update()
+void GameUser::Initialize()
 {
-	if (!bOn)
+	if (m_packetManager->m_packetData->userState != m_state)
 	{
-		bOn = true;
+		m_state = m_packetManager->m_packetData->userState;
 
-		if (m_systemFrame != nullptr)
-		{
-			SafeDelete(m_systemFrame);
-		}
+		SafeDelete(m_systemFrame);
 
 		switch (m_state)
 		{
-		case USER_STATE::CLOSE_CONNECT:
-			bSocketConnect = false;
-			return;
-			break;
-		case  USER_STATE::LOBBY:
+		case USER_STATE::USER_LOBBY:
 			m_systemFrame = new LobbySystem();
 			break;
-		case USER_STATE::IN_ROOM:
+		case USER_STATE::USER_GAME_ROOM:
 			m_systemFrame = new GameRoomSystem();
 			break;
-		case USER_STATE::PLAY_GAME:
+		case USER_STATE::USER_PLAY_GAME:
 			//m_systemFrame = new PlayGameSystem();
 			break;
 		}
-
-		StartThread();
 	}
 }
 
-void GameUser::StartThread()
+void GameUser::Recv()
 {
-	if (m_threadHandle != nullptr)
-	{
-		CloseHandle(m_threadHandle);
-	}
 
-	m_systemFrame->Update(this);
+}
+
+void GameUser::Send()
+{
+
 }
 
 int GameUser::GetUserNum()
@@ -81,22 +76,9 @@ int GameUser::GetUserNum()
 	return m_userNum;
 }
 
-void GameUser::SetUserNum(int userNum)
-{
-	m_userNum = userNum;
-}
-
-void GameUser::SetRoomNum(int roomNum)
-{
-	m_packetManager->m_lobbyPacket->n_roomNum = roomNum;
-}
-
-USER_STATE GameUser::GetUserState()
-{
-	return m_state;
-}
-
 bool GameUser::IsConnect()
 {
-	return bSocketConnect;
+	bool bConnect = (m_state != USER_STATE::CLOSE_CONNECT);
+
+	return bConnect;
 }

@@ -9,34 +9,26 @@ class GameRoomSystem;
 class GameUser
 {
 private:
-	bool bOn = false;
-	bool bSocketConnect = true;
-
 	SOCKET m_socket;
 	SOCKADDR_IN m_cliaddr = { 0 };
 
+	USER_STATE m_state;
 	int m_userNum = 0;
+
 	PacketManager* m_packetManager = nullptr;
+	
+	SystemFrame* m_systemFrame = nullptr;
 
 	HANDLE m_threadHandle = nullptr;
-
-	USER_STATE m_state;
-
-	SystemFrame* m_systemFrame = nullptr;
 public:
-	friend LobbySystem;
-	friend GameRoomSystem;
-	//
-public:
-	void Update();
-	void StartThread();
+	void Initialize();
+	void Recv();
+	void Send();
+	static unsigned int WINAPI Communication(void*);
 
 	int GetUserNum();
-	void SetUserNum(int);
-	void SetRoomNum(int);
-	USER_STATE GetUserState();
 	bool IsConnect();
 
-	GameUser(SOCKET, SOCKADDR_IN);
+	GameUser(SOCKET, SOCKADDR_IN, int);
 	~GameUser();
 };
