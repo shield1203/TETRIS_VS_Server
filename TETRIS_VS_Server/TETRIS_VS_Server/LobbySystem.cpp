@@ -18,49 +18,35 @@ void LobbySystem::CheckPacket(void* packetManager)
 {
 	PacketManager* pPacketManager = (PacketManager*)packetManager;
 
-
-}
-
-bool LobbySystem::CheckPacket()
-{
-	if (m_gameUser->m_state == USER_STATE::CLOSE_CONNECT)
-	{
-		printf("%s:%d와 통신 종료\n", inet_ntoa(m_gameUser->m_cliaddr.sin_addr), ntohs(m_gameUser->m_cliaddr.sin_port));
-		return false;
-	}
-
-	switch (m_gameUser->m_packetManager->m_lobbyPacket->userReq)
+	switch (pPacketManager->m_lobbyData->userReq)
 	{
 	case USER_LOBBY::LOBBY_IDLE:
 		break;
 	case USER_LOBBY::LOBBY_CREATE_ROOM:
-		m_gameUser->m_state = USER_STATE::IN_ROOM;
-
-		m_roomManager->CreateGameRoom(m_gameUser);
-		m_gameUser->m_packetManager->m_lobbyPacket->b_enterRoom = true;
-
-		printf("%s:%d 가 게임룸 %d 생성\n", 
-			inet_ntoa(m_gameUser->m_cliaddr.sin_addr), ntohs(m_gameUser->m_cliaddr.sin_port), m_gameUser->m_packetManager->m_lobbyPacket->n_roomNum);
+		LobbyCreateRoom(pPacketManager);
 		break;
 	case USER_LOBBY::LOBBY_ENTER_ROOM:
-		if (m_roomManager->EnterRoom(m_gameUser->m_packetManager->m_lobbyPacket->n_roomNum, m_gameUser))
-		{
-			m_gameUser->m_state = USER_STATE::IN_ROOM;
-
-			m_gameUser->m_packetManager->m_lobbyPacket->b_enterRoom = true;
-
-			printf("%s:%d 가 %d게임룸 입장\n", 
-				inet_ntoa(m_gameUser->m_cliaddr.sin_addr), ntohs(m_gameUser->m_cliaddr.sin_port), m_gameUser->m_packetManager->m_lobbyPacket->n_roomNum);
-		}
-		else
-		{
-			m_gameUser->m_packetManager->m_lobbyPacket->b_enterRoom = false;
-
-			printf("%s:%d 가 %d게임룸 입장실패\n", 
-				inet_ntoa(m_gameUser->m_cliaddr.sin_addr), ntohs(m_gameUser->m_cliaddr.sin_port), m_gameUser->m_packetManager->m_lobbyPacket->n_roomNum);
-		}
+		LobbyEnterRoom(pPacketManager->m_lobbyData->roomNum, pPacketManager);
 		break;
 	}
+}
 
-	return true;
+void LobbySystem::LobbyCreateRoom(PacketManager* packetManager)
+{
+	RoomManager::getInstance()->CreateGameRoom(packetManager);
+	printf("%d유저가 게임룸 %d 생성\n", packetManager->m_userNum, packetManager->m_lobbyData->roomNum);
+}
+
+void LobbySystem::LobbyEnterRoom(int roomNum, PacketManager* packetManager)
+{
+	bool bEnter = RoomManager::getInstance()->EnterRoom(roomNum, packetManager);
+	
+	if (bEnter)
+	{
+		printf("%d유저가 게임룸 %d 입장성공\n", packetManager->m_userNum, packetManager->m_lobbyData->roomNum);
+	}
+	else
+	{
+		printf("%d유저가 게임룸 %d 입장실패\n", packetManager->m_userNum, packetManager->m_lobbyData->roomNum);
+	}
 }

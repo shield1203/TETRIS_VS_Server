@@ -3,8 +3,9 @@
 #include "RoomManager.h"
 #include "GameUser.h"
 
-PacketManager::PacketManager()
+PacketManager::PacketManager(int userNum)
 {
+	m_userNum = userNum;
 	m_roomManager = RoomManager::getInstance();
 
 	m_packetData = new PacketData;
@@ -101,12 +102,18 @@ void PacketManager::SetGameRoomData()
 		{
 			for (auto userList : roomList->gameUserList)
 			{
-				if (m_gameRoomData->userNum != userList->GetUserNum())
+				if (m_userNum != userList->m_userNum)
 				{
-					memcpy(m_packetData->data, userList->m_packetManager->m_packetData, sizeof(GameRoomData));
+					memcpy(m_packetData->data, userList->m_gameRoomData, sizeof(GameRoomData));
 					m_packetData += static_cast <unsigned short>(sizeof(GameRoomData));
+					break;
 				}
 			}
+		}
+
+		if (m_packetData->size != 0)
+		{
+			break;
 		}
 	}
 
@@ -118,6 +125,8 @@ void PacketManager::SetGameRoomData()
 
 		memcpy(m_packetData->data, gameRoomData, sizeof(GameRoomData));
 		m_packetData += static_cast <unsigned short>(sizeof(GameRoomData));
+
+		SafeDelete(gameRoomData);
 	}
 }
 

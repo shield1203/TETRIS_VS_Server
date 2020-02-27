@@ -1,7 +1,7 @@
 #pragma once
 class RoomManager;
 
-typedef struct PacketData
+struct PacketData
 {
 	USER_STATE userState;
 	unsigned short size = 0;
@@ -15,7 +15,7 @@ struct LobbyData
 {
 	USER_LOBBY userReq = USER_LOBBY::LOBBY_IDLE;
 	bool bEnterRoom = true;
-	int nRoomNum = 0;
+	int roomNum = 0;
 };
 
 // GameRoom
@@ -24,7 +24,6 @@ enum class USER_ROOM : unsigned int { ROOM_IDLE, ROOM_BACK_LOBBY, ROOM_GAME_STAR
 struct GameRoomData
 {
 	USER_ROOM userReq = USER_ROOM::ROOM_IDLE;
-	int userNum = 0;
 	int roomNum = 0;
 	bool bOn = false;
 	bool bOwner = false;
@@ -41,6 +40,8 @@ struct PlayGameData
 class PacketManager
 {
 public:
+	int m_userNum = 0;
+
 	RoomManager* m_roomManager = nullptr;
 
 	PacketData* m_packetData = nullptr;
@@ -61,6 +62,6 @@ public:
 	void SetGameRoomData();
 	void SetPlayGameData();
 
-	PacketManager();
+	PacketManager(int);
 	~PacketManager();
 };

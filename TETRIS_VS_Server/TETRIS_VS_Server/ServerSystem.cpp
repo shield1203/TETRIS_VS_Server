@@ -37,8 +37,6 @@ void ServerSystem::Process()
 	{
 		for (auto i = m_userList.begin(); i != m_userList.end();)
 		{
-			(*i)->Update();
-
 			if ((*i)->IsConnect())
 			{
 				i++;
@@ -112,8 +110,7 @@ unsigned int WINAPI ServerSystem::AcceptUser(void* param)
 
 		printf("%s:%d의 연결 요청 수락\n", inet_ntoa(cliaddr.sin_addr), ntohs(cliaddr.sin_port));
 
-		GameUser* pAddUser = new GameUser(userSoket, cliaddr);
-
+		// 유저 번호
 		int n_userNum = 0;
 		while (true)
 		{
@@ -135,7 +132,8 @@ unsigned int WINAPI ServerSystem::AcceptUser(void* param)
 			n_userNum++;
 		}
 
-		pAddUser->SetUserNum(n_userNum);
+		GameUser* pAddUser = new GameUser(userSoket, cliaddr, n_userNum);
+
 		m_serverSystem->m_userList.push_back(pAddUser);
 	}
 

@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "RoomManager.h"
-#include "GameUser.h"
 #include "PacketManager.h"
 
 RoomManager* RoomManager::Inst = nullptr;
@@ -22,10 +21,6 @@ RoomManager::~RoomManager()
 {
 	for (auto room : m_roomList)
 	{
-		for (auto userList : room->gameUserList)
-		{
-			SafeDelete(userList);
-		}
 		room->gameUserList.clear();
 
 		SafeDelete(room);
@@ -35,10 +30,8 @@ RoomManager::~RoomManager()
 	Inst = nullptr;
 }
 
-void RoomManager::CreateGameRoom(GameUser* ownerUser)
+void RoomManager::CreateGameRoom(PacketManager* ownerUser)
 {
-	// 抗寇贸府 遏
-	// mutex
 	GameRoom* newGameRoom = new GameRoom;
 	newGameRoom->gameUserList.push_back(ownerUser);
 
@@ -57,8 +50,10 @@ void RoomManager::CreateGameRoom(GameUser* ownerUser)
 
 		if (bRoom)
 		{
-			ownerUser->SetRoomNum(roomNum);
 			newGameRoom->roomNum = roomNum;
+
+			ownerUser->m_lobbyData->roomNum = roomNum;
+			ownerUser->m_gameRoomData->roomNum = roomNum;
 			break;
 		}
 	}
@@ -66,7 +61,7 @@ void RoomManager::CreateGameRoom(GameUser* ownerUser)
 	m_roomList.push_back(newGameRoom);
 }
 
-bool RoomManager::EnterRoom(int roomNum, GameUser* gameUser)
+bool RoomManager::EnterRoom(int roomNum, PacketManager* gameUser)
 {
 	for (auto i : m_roomList)
 	{
@@ -74,44 +69,41 @@ bool RoomManager::EnterRoom(int roomNum, GameUser* gameUser)
 		{
 			if (i->gameUserList.size() < FULL_USER_COUNT)
 			{
-				gameUser->SetRoomNum(roomNum);
+				gameUser->m_lobbyData->bEnterRoom = true;
 				i->gameUserList.push_back(gameUser);
-
 				return true;
 			}
 			else
 			{
+				gameUser->m_lobbyData->bEnterRoom = false;
 				return false;
 			}
 		}
 	}
 
+	gameUser->m_lobbyData->bEnterRoom = false;
 	return false;
 }
 
-void RoomManager::ExitRoom(int roomNum, GameUser* gameUser)
+void RoomManager::ExitRoom(int userNum)
 {
 	for (auto room : m_roomList)
 	{
-		if (room->roomNum == roomNum)
+		for (auto user = room->gameUserList.begin(); user != room->gameUserList.end();)
 		{
-			for (auto user = room->gameUserList.begin(); user != room->gameUserList.end();)
+			if ((*user)->m_userNum == userNum)
 			{
-				if ((*user)->GetUserNum() == gameUser->GetUserNum())
-				{
-					user = room->gameUserList.erase(user++);
-				}
+				user = room->gameUserList.erase(user++);
+				printf("%d蜡历啊 霸烙冯 %d 硼厘\n", userNum, room->roomNum);
 			}
-			CheckRoom(room);
-
-			break;
 		}
+		CheckRoom(room);
 	}
 }
 
 void RoomManager::CheckRoom(GameRoom* gameRoom)
 {
-	// 后 规
+	// 后 规绝局扁
 	if (gameRoom->gameUserList.empty())
 	{
 		for (auto room = m_roomList.begin(); room != m_roomList.end();)

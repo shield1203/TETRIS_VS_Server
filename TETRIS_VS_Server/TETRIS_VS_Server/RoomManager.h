@@ -1,12 +1,13 @@
 #pragma once
 class GameUser;
+class PacketManager;
 
 enum ROOM_MANAGER { FULL_USER_COUNT = 2 };
 
 struct GameRoom
 {
 	int roomNum = 0;
-	list<GameUser*>gameUserList;
+	list<PacketManager*>gameUserList;
 };
 
 class RoomManager
@@ -19,9 +20,9 @@ public:
 public:
 	static RoomManager* getInstance();
 
-	void CreateGameRoom(GameUser*);
-	bool EnterRoom(int, GameUser*);
-	void ExitRoom(int, GameUser*);
+	void CreateGameRoom(PacketManager*);
+	bool EnterRoom(int, PacketManager*);
+	void ExitRoom(int);
 	void CheckRoom(GameRoom*);
 
 	~RoomManager();

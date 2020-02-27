@@ -16,7 +16,7 @@ GameUser::GameUser(SOCKET socket, SOCKADDR_IN cliaddr, int userNum)
 	m_userNum = userNum;
 
 	m_state = USER_STATE::USER_LOBBY;
-	m_packetManager = new PacketManager();
+	m_packetManager = new PacketManager(userNum);
 
 	m_systemFrame = new LobbySystem();
 }
@@ -70,7 +70,7 @@ void GameUser::Recv()
 	}
 	else
 	{
-		m_state = USER_STATE::CLOSE_CONNECT;
+		m_packetManager->m_packetData->userState = USER_STATE::CLOSE_CONNECT;
 	}
 }
 
@@ -96,19 +96,30 @@ unsigned int WINAPI GameUser::Communication(void* gameUser)
 {
 	GameUser* pGameUser = (GameUser*)gameUser;
 
-	while (pGameUser->m_state != USER_STATE::CLOSE_CONNECT)
+	while (pGameUser->m_packetManager->m_packetData->userState != USER_STATE::CLOSE_CONNECT)
 	{
 		pGameUser->Initialize();
 
 		pGameUser->Recv();
 
-		if (pGameUser->m_state != USER_STATE::CLOSE_CONNECT)
+		if (pGameUser->m_packetManager->m_packetData->userState != USER_STATE::CLOSE_CONNECT)
 		{
 			pGameUser->m_systemFrame->CheckPacket(pGameUser->m_packetManager);
 
 			pGameUser->Send();
 		}
 	}
+
+	switch (pGameUser->m_state)
+	{
+	case USER_STATE::USER_GAME_ROOM:
+	case USER_STATE::USER_PLAY_GAME:
+		RoomManager::getInstance()->ExitRoom(pGameUser->m_packetManager->m_userNum);
+		break;
+	}
+
+	pGameUser->m_state = USER_STATE::CLOSE_CONNECT;
+	printf("%s:%d와 통신 종료\n", inet_ntoa(pGameUser->m_cliaddr.sin_addr), ntohs(pGameUser->m_cliaddr.sin_port));
 
 	return 0;
 }

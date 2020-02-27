@@ -1,5 +1,6 @@
 #pragma once
 class SystemFrame;
+class PacketManager;
 
 class LobbySystem : public SystemFrame
 {
@@ -9,5 +10,6 @@ public:
 
 	virtual void CheckPacket(void*);
 
-	static unsigned int WINAPI Communication(void*);
+	void LobbyCreateRoom(PacketManager*);
+	void LobbyEnterRoom(int, PacketManager*);
 };
