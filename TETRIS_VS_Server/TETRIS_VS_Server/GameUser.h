@@ -16,9 +16,8 @@ private:
 	int m_userNum = 0;
 	
 	SystemFrame* m_systemFrame = nullptr;
-
-	HANDLE m_threadHandle = nullptr;
 public:
+	HANDLE m_threadHandle = nullptr;
 	PacketManager* m_packetManager = nullptr;
 public:
 	void Initialize();

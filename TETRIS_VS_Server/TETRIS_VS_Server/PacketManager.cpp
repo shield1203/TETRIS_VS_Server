@@ -24,9 +24,7 @@ PacketManager::~PacketManager()
 
 void PacketManager::CopyPacket(PacketData* packetData)
 {
-	m_packetData->userState = packetData->userState;
-	m_packetData->size = packetData->size;
-	strcpy(m_packetData->data, packetData->data);
+	memcpy(m_packetData, packetData, sizeof(PacketData));
 }
 
 void PacketManager::GetData(USER_STATE userState)
@@ -83,13 +81,17 @@ void PacketManager::SetLobbyData()
 	m_packetData->size = 0;
 
 	memcpy(m_packetData->data, m_lobbyData, sizeof(LobbyData));
-	m_packetData += static_cast<unsigned short>(sizeof(LobbyData));
+	m_packetData->size += static_cast<unsigned short>(sizeof(LobbyData));
 
+	LobbyData_GameRoom* room = new LobbyData_GameRoom;
 	for (auto roomList : m_roomManager->m_roomList)
 	{
-		memcpy(m_packetData->data + m_packetData->size, roomList, sizeof(GameRoom));
-		m_packetData->size += static_cast < unsigned short>(sizeof(GameRoom));
+		room->roomNum = roomList->roomNum;
+		room->userCount = roomList->gameUserList.size();
+		memcpy(m_packetData->data + m_packetData->size, room, sizeof(LobbyData_GameRoom));
+		m_packetData->size += static_cast < unsigned short>(sizeof(LobbyData_GameRoom));
 	}
+	SafeDelete(room);
 }
 
 void PacketManager::SetGameRoomData()
@@ -105,7 +107,7 @@ void PacketManager::SetGameRoomData()
 				if (m_userNum != userList->m_userNum)
 				{
 					memcpy(m_packetData->data, userList->m_gameRoomData, sizeof(GameRoomData));
-					m_packetData += static_cast <unsigned short>(sizeof(GameRoomData));
+					m_packetData->size += static_cast <unsigned short>(sizeof(GameRoomData));
 					break;
 				}
 			}
@@ -124,7 +126,7 @@ void PacketManager::SetGameRoomData()
 		gameRoomData->bOn = false;
 
 		memcpy(m_packetData->data, gameRoomData, sizeof(GameRoomData));
-		m_packetData += static_cast <unsigned short>(sizeof(GameRoomData));
+		m_packetData->size += static_cast <unsigned short>(sizeof(GameRoomData));
 
 		SafeDelete(gameRoomData);
 	}

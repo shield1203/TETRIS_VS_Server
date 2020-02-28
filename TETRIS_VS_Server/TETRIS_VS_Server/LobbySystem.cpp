@@ -34,7 +34,7 @@ void LobbySystem::CheckPacket(void* packetManager)
 void LobbySystem::LobbyCreateRoom(PacketManager* packetManager)
 {
 	RoomManager::getInstance()->CreateGameRoom(packetManager);
-	printf("%d유저가 게임룸 %d 생성\n", packetManager->m_userNum, packetManager->m_lobbyData->roomNum);
+	printf("[%d]유저가 게임룸 [%d] 생성\n", packetManager->m_userNum, packetManager->m_lobbyData->roomNum);
 }
 
 void LobbySystem::LobbyEnterRoom(int roomNum, PacketManager* packetManager)
@@ -43,10 +43,10 @@ void LobbySystem::LobbyEnterRoom(int roomNum, PacketManager* packetManager)
 	
 	if (bEnter)
 	{
-		printf("%d유저가 게임룸 %d 입장성공\n", packetManager->m_userNum, packetManager->m_lobbyData->roomNum);
+		printf("[%d]유저가 게임룸 [%d] 입장성공\n", packetManager->m_userNum, packetManager->m_lobbyData->roomNum);
 	}
 	else
 	{
-		printf("%d유저가 게임룸 %d 입장실패\n", packetManager->m_userNum, packetManager->m_lobbyData->roomNum);
+		printf("[%d]유저가 게임룸 [%d] 입장실패\n", packetManager->m_userNum, packetManager->m_lobbyData->roomNum);
 	}
 }

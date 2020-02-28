@@ -119,7 +119,7 @@ unsigned int WINAPI GameUser::Communication(void* gameUser)
 	}
 
 	pGameUser->m_state = USER_STATE::CLOSE_CONNECT;
-	printf("%s:%d와 통신 종료\n", inet_ntoa(pGameUser->m_cliaddr.sin_addr), ntohs(pGameUser->m_cliaddr.sin_port));
+	printf("%s:[%d]와 통신 종료\n", inet_ntoa(pGameUser->m_cliaddr.sin_addr), ntohs(pGameUser->m_cliaddr.sin_port));
 
 	return 0;
 }

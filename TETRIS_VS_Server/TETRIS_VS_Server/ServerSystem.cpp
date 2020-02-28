@@ -134,6 +134,9 @@ unsigned int WINAPI ServerSystem::AcceptUser(void* param)
 
 		GameUser* pAddUser = new GameUser(userSoket, cliaddr, n_userNum);
 
+		unsigned int threadID = 0;
+		pAddUser->m_threadHandle = (HANDLE)_beginthreadex(NULL, 0, pAddUser->Communication, (void*)pAddUser, 0, (unsigned*)&threadID);
+
 		m_serverSystem->m_userList.push_back(pAddUser);
 	}
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #define PORT_NUM 21524
-#define BLOG_SIZE 5
+#define BLOG_SIZE 10
 #define MAX_MSG_LEN 300
 #define MAX_DATA_LEN 256
 

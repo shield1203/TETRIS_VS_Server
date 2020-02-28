@@ -24,6 +24,7 @@ public:
 	bool EnterRoom(int, PacketManager*);
 	void ExitRoom(int);
 	void CheckRoom(GameRoom*);
+	void GameStartRoom(int);
 
 	~RoomManager();
 };

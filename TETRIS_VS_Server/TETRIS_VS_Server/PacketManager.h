@@ -3,13 +3,13 @@ class RoomManager;
 
 struct PacketData
 {
-	USER_STATE userState;
+	USER_STATE userState = USER_STATE::USER_LOBBY;
 	unsigned short size = 0;
 	char data[256] = "";
 };
 
 // Lobby
-enum class USER_LOBBY : unsigned int { LOBBY_IDLE, LOBBY_CREATE_ROOM, LOBBY_ENTER_ROOM };
+enum class USER_LOBBY : unsigned int { LOBBY_IDLE, LOBBY_CREATE_ROOM, LOBBY_ENTER_ROOM, LOBBY_BACK_MENU };
 
 struct LobbyData
 {
@@ -18,8 +18,14 @@ struct LobbyData
 	int roomNum = 0;
 };
 
+struct LobbyData_GameRoom
+{
+	int roomNum;
+	int userCount = 0;
+};
+
 // GameRoom
-enum class USER_ROOM : unsigned int { ROOM_IDLE, ROOM_BACK_LOBBY, ROOM_GAME_START };
+enum class USER_ROOM : unsigned int { ROOM_IDLE, ROOM_BACK_LOBBY, ROOM_GAME_START, ROOM_BACK_MENU };
 
 struct GameRoomData
 {
@@ -28,7 +34,6 @@ struct GameRoomData
 	bool bOn = false;
 	bool bOwner = false;
 	bool bReady = false;
-	bool bGameStart = false;
 };
 
 // PlayGame

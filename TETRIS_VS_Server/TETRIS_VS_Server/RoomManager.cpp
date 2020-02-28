@@ -116,3 +116,18 @@ void RoomManager::CheckRoom(GameRoom* gameRoom)
 		}
 	}
 }
+
+void RoomManager::GameStartRoom(int roomNum)
+{
+	for (auto room : m_roomList)
+	{
+		if (room->roomNum == roomNum)
+		{
+			for (auto user = room->gameUserList.begin(); user != room->gameUserList.end();)
+			{
+				(*user)->m_gameRoomData->userReq = USER_ROOM::ROOM_GAME_START;
+			}
+			break;
+		}
+	}
+}
