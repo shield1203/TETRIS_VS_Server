@@ -95,6 +95,11 @@ void RoomManager::ExitRoom(int userNum)
 			{
 				user = (*room)->gameUserList.erase(user++);
 				printf("[%d]À¯Àú°¡ [%d]°ÔÀÓ·ë ÅðÀå\n", userNum, (*room)->roomNum);
+				break;
+			}
+			else
+			{
+				user++;
 			}
 		}
 		
@@ -102,7 +107,10 @@ void RoomManager::ExitRoom(int userNum)
 		{
 			printf("[%d]°ÔÀÓ·ë Á¦°Å\n", (*room)->roomNum);
 			room = m_roomList.erase(room++);
+			break;
 		}
+
+		room++;
 	}
 }
 
@@ -134,6 +142,7 @@ void RoomManager::GameStartRoom(int roomNum)
 			for (auto user = room->gameUserList.begin(); user != room->gameUserList.end();)
 			{
 				(*user)->m_gameRoomData->userReq = USER_ROOM::ROOM_GAME_START;
+				user++;
 			}
 			break;
 		}
