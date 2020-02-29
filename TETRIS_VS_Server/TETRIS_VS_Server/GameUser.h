@@ -1,5 +1,4 @@
 #pragma once
-
 class SystemFrame;
 class PacketManager;
 class LobbySystem;
@@ -17,6 +16,7 @@ private:
 	
 	SystemFrame* m_systemFrame = nullptr;
 public:
+	mutex m_mutex;
 	HANDLE m_threadHandle = nullptr;
 	PacketManager* m_packetManager = nullptr;
 public:

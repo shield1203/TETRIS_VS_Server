@@ -98,18 +98,19 @@ unsigned int WINAPI GameUser::Communication(void* gameUser)
 
 	while (pGameUser->m_packetManager->m_packetData->userState != USER_STATE::CLOSE_CONNECT)
 	{
-		pGameUser->Initialize();
-
 		pGameUser->Recv();
 
 		if (pGameUser->m_packetManager->m_packetData->userState != USER_STATE::CLOSE_CONNECT)
 		{
+			pGameUser->Initialize();
+
 			pGameUser->m_systemFrame->CheckPacket(pGameUser->m_packetManager);
 
 			pGameUser->Send();
 		}
 	}
 
+	pGameUser->m_mutex.lock();
 	switch (pGameUser->m_state)
 	{
 	case USER_STATE::USER_GAME_ROOM:
@@ -118,8 +119,9 @@ unsigned int WINAPI GameUser::Communication(void* gameUser)
 		break;
 	}
 
-	pGameUser->m_state = USER_STATE::CLOSE_CONNECT;
 	printf("%s:[%d]와 통신 종료\n", inet_ntoa(pGameUser->m_cliaddr.sin_addr), ntohs(pGameUser->m_cliaddr.sin_port));
+	pGameUser->m_state = USER_STATE::CLOSE_CONNECT;
+	pGameUser->m_mutex.unlock();
 
 	return 0;
 }

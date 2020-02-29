@@ -9,4 +9,5 @@ public:
 	~GameRoomSystem();
 	virtual void CheckPacket(void*);
 	void GameStart(PacketManager*);
+	void BackLobby(int);
 };

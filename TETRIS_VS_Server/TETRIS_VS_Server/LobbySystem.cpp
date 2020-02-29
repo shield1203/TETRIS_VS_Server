@@ -33,12 +33,15 @@ void LobbySystem::CheckPacket(void* packetManager)
 
 void LobbySystem::LobbyCreateRoom(PacketManager* packetManager)
 {
+	m_mutex.lock();
 	RoomManager::getInstance()->CreateGameRoom(packetManager);
 	printf("[%d]유저가 게임룸 [%d] 생성\n", packetManager->m_userNum, packetManager->m_lobbyData->roomNum);
+	m_mutex.unlock();
 }
 
 void LobbySystem::LobbyEnterRoom(int roomNum, PacketManager* packetManager)
 {
+	m_mutex.lock();
 	bool bEnter = RoomManager::getInstance()->EnterRoom(roomNum, packetManager);
 	
 	if (bEnter)
@@ -49,4 +52,5 @@ void LobbySystem::LobbyEnterRoom(int roomNum, PacketManager* packetManager)
 	{
 		printf("[%d]유저가 게임룸 [%d] 입장실패\n", packetManager->m_userNum, packetManager->m_lobbyData->roomNum);
 	}
+	m_mutex.unlock();
 }

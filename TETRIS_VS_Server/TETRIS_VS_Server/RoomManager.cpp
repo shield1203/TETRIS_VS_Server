@@ -87,17 +87,22 @@ bool RoomManager::EnterRoom(int roomNum, PacketManager* gameUser)
 
 void RoomManager::ExitRoom(int userNum)
 {
-	for (auto room : m_roomList)
+	for (auto room = m_roomList.begin(); room != m_roomList.end();)
 	{
-		for (auto user = room->gameUserList.begin(); user != room->gameUserList.end();)
+		for (auto user = (*room)->gameUserList.begin(); user != (*room)->gameUserList.end();)
 		{
 			if ((*user)->m_userNum == userNum)
 			{
-				user = room->gameUserList.erase(user++);
-				printf("%dÀ¯Àú°¡ °ÔÀÓ·ë %d ÅðÀå\n", userNum, room->roomNum);
+				user = (*room)->gameUserList.erase(user++);
+				printf("[%d]À¯Àú°¡ [%d]°ÔÀÓ·ë ÅðÀå\n", userNum, (*room)->roomNum);
 			}
 		}
-		CheckRoom(room);
+		
+		if ((*room)->gameUserList.empty())
+		{
+			printf("[%d]°ÔÀÓ·ë Á¦°Å\n", (*room)->roomNum);
+			room = m_roomList.erase(room++);
+		}
 	}
 }
 
@@ -110,6 +115,7 @@ void RoomManager::CheckRoom(GameRoom* gameRoom)
 		{
 			if ((*room)->roomNum == gameRoom->roomNum)
 			{
+				printf("[%d]°ÔÀÓ·ë Á¦°Å\n", gameRoom->roomNum);
 				room = m_roomList.erase(room++);
 				break;
 			}
@@ -123,6 +129,8 @@ void RoomManager::GameStartRoom(int roomNum)
 	{
 		if (room->roomNum == roomNum)
 		{
+			printf("[%d]°ÔÀÓ·ë °ÔÀÓ½ÃÀÛ\n", room->roomNum);
+
 			for (auto user = room->gameUserList.begin(); user != room->gameUserList.end();)
 			{
 				(*user)->m_gameRoomData->userReq = USER_ROOM::ROOM_GAME_START;
