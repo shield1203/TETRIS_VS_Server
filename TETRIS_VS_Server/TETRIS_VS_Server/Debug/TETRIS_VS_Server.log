@@ -1,7 +1,4 @@
-﻿  GameRoomSystem.cpp
-  GameUser.cpp
-  LobbySystem.cpp
+﻿  GameUser.cpp
   PacketManager.cpp
-  RoomManager.cpp
   코드를 생성하고 있습니다...
   TETRIS_VS_Server.vcxproj -> F:\TETRIS_VS\TETRIS_VS_Server\Debug\TETRIS_VS_Server.exe

@@ -24,6 +24,7 @@ void GameRoomSystem::CheckPacket(void* packetManager)
 		BackLobby(pPacketManager->m_userNum);
 		break;
 	case USER_ROOM::ROOM_GAME_START:
+		pPacketManager->m_gameRoomData->bReady = false;
 		GameStart(pPacketManager);
 		break;
 	}

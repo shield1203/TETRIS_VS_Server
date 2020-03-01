@@ -24,13 +24,17 @@ void VersusPlaySystem::CheckPacket(void* packetManager)
 void VersusPlaySystem::CheckGameOver(PacketManager* packetManager)
 {
 	m_mutex.lock();
+	
+	int count = 0;
 	for (auto block : packetManager->m_blockList)
 	{
-		if (block->yPos == 2)
+		if (count > 3 && block->yPos == 2)
 		{
 			RoomManager::getInstance()->SetGameResult(packetManager->m_userNum);
 			break;
 		}
+		count++;
 	}
+
 	m_mutex.unlock();
 }

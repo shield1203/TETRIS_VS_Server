@@ -2,8 +2,8 @@
 
 #define PORT_NUM 21524
 #define BLOG_SIZE 10
-#define MAX_MSG_LEN 2330
-#define MAX_DATA_LEN 2316 // 테트리스에서 최대 블록 개수일 때 데이터크기
+#define MAX_MSG_LEN 2937
+#define MAX_DATA_LEN 2929 // 테트리스에서 최대 블록 개수일 때 데이터크기
 
 enum class USER_STATE : unsigned int { USER_LOBBY, USER_GAME_ROOM, USER_PLAY_GAME, USER_RESULT, CLOSE_CONNECT };
 

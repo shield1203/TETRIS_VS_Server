@@ -102,6 +102,8 @@ unsigned int WINAPI GameUser::Communication(void* gameUser)
 
 	while (pGameUser->m_packetManager->m_packetData->userState != USER_STATE::CLOSE_CONNECT)
 	{
+		pGameUser->m_mutex.lock();
+
 		pGameUser->Recv();
 
 		if (pGameUser->m_packetManager->m_packetData->userState != USER_STATE::CLOSE_CONNECT)
@@ -112,6 +114,8 @@ unsigned int WINAPI GameUser::Communication(void* gameUser)
 
 			pGameUser->Send();
 		}
+
+		pGameUser->m_mutex.unlock();
 	}
 
 	pGameUser->m_mutex.lock();
