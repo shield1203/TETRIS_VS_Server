@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClInclude Include="Define.h" />
     <ClInclude Include="DefineFunction.h" />
+    <ClInclude Include="GameResultSystem.h" />
     <ClInclude Include="GameRoomSystem.h" />
     <ClInclude Include="LobbySystem.h" />
     <ClInclude Include="PacketManager.h" />
@@ -149,8 +150,10 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="GameUser.h" />
     <ClInclude Include="SystemFrame.h" />
+    <ClInclude Include="VersusPlaySystem.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GameResultSystem.cpp" />
     <ClCompile Include="GameRoomSystem.cpp" />
     <ClCompile Include="GameUser.cpp" />
     <ClCompile Include="LobbySystem.cpp" />
@@ -158,6 +161,7 @@
     <ClCompile Include="RoomManager.cpp" />
     <ClCompile Include="ServerStart.cpp" />
     <ClCompile Include="ServerSystem.cpp" />
+    <ClCompile Include="VersusPlaySystem.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

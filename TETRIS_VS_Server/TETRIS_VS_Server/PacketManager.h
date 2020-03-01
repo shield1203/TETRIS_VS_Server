@@ -5,7 +5,7 @@ struct PacketData
 {
 	USER_STATE userState = USER_STATE::USER_LOBBY;
 	unsigned short size = 0;
-	char data[256] = "";
+	char data[MAX_DATA_LEN] = "";
 };
 
 // Lobby
@@ -37,9 +37,18 @@ struct GameRoomData
 };
 
 // PlayGame
+enum class USER_PLAY : unsigned int { PLAY_IDLE, PLAY_LOSE, PLAY_WIN, RESULT_BACK_ROOM };
+
 struct PlayGameData
 {
+	USER_PLAY userReq = USER_PLAY::PLAY_IDLE;
+};
 
+struct PlayGameData_Block
+{
+	int xPos = 0;
+	int yPos = 0;
+	COLOR textColor = WHITE;
 };
 
 class PacketManager
@@ -53,19 +62,25 @@ public:
 	LobbyData* m_lobbyData = nullptr;
 	GameRoomData* m_gameRoomData = nullptr;
 	PlayGameData* m_playGameData = nullptr;
+
+	list<PlayGameData_Block*> m_blockList;
 public:
+	void ClearBlockList();
+
 	// Recv
 	void CopyPacket(PacketData*);
 	void GetData(USER_STATE);
 	void GetLobbyData();
 	void GetGameRoomData();
 	void GetPlayGameData();
+	void GetPlayResultData();
 
 	// Send
 	void SetPacket(USER_STATE);
 	void SetLobbyData();
 	void SetGameRoomData();
 	void SetPlayGameData();
+	void SetPlayResultData();
 
 	PacketManager(int);
 	~PacketManager();

@@ -3,7 +3,8 @@ class SystemFrame;
 class PacketManager;
 class LobbySystem;
 class GameRoomSystem;
-//class PlayGameSystem;
+class VersusPlaySystem;
+class GameResultSystem;
 
 class GameUser
 {

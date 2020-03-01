@@ -25,6 +25,7 @@ public:
 	void ExitRoom(int);
 	void CheckRoom(GameRoom*);
 	void GameStartRoom(int);
+	void SetGameResult(int);
 
 	~RoomManager();
 };

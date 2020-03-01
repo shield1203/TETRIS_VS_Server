@@ -148,3 +148,21 @@ void RoomManager::GameStartRoom(int roomNum)
 		}
 	}
 }
+
+void RoomManager::SetGameResult(int userNum)
+{
+	for (auto room : m_roomList)
+	{
+		for (auto user : room->gameUserList)
+		{
+			if (user->m_userNum == userNum)
+			{
+				user->m_playGameData->userReq = USER_PLAY::PLAY_WIN;
+			}
+			else
+			{
+				user->m_playGameData->userReq = USER_PLAY::PLAY_LOSE;
+			}
+		}
+	}
+}

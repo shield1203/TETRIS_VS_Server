@@ -20,6 +20,16 @@ PacketManager::~PacketManager()
 	SafeDelete(m_lobbyData);
 	SafeDelete(m_gameRoomData);
 	SafeDelete(m_playGameData);
+	ClearBlockList();
+}
+
+void PacketManager::ClearBlockList()
+{
+	for (auto i : m_blockList)
+	{
+		SafeDelete(i);
+	}
+	m_blockList.clear();
 }
 
 void PacketManager::CopyPacket(PacketData* packetData)
@@ -57,7 +67,26 @@ void PacketManager::GetGameRoomData()
 
 void PacketManager::GetPlayGameData()
 {
-	//ZeroMemory(m_gameRoomData, sizeof(GameRoomData));
+	ZeroMemory(m_playGameData, sizeof(PlayGameData));
+	memcpy(m_playGameData, m_packetData->data, sizeof(PlayGameData));
+
+	int size = sizeof(PlayGameData);
+
+	ClearBlockList();
+	while (size < m_packetData->size)
+	{
+		PlayGameData_Block* block = new PlayGameData_Block;
+		memcpy(block, m_packetData->data + size, sizeof(PlayGameData_Block));
+		m_blockList.push_back(block);
+
+		size += sizeof(PlayGameData_Block);
+	}
+}
+
+void PacketManager::GetPlayResultData()
+{
+	ZeroMemory(m_playGameData, sizeof(PlayGameData));
+	memcpy(m_playGameData, m_packetData->data, sizeof(PlayGameData));
 }
 
 void PacketManager::SetPacket(USER_STATE userState)
@@ -134,5 +163,79 @@ void PacketManager::SetGameRoomData()
 
 void PacketManager::SetPlayGameData()
 {
+	m_packetData->size = 0;
 
+	for (auto roomList : m_roomManager->m_roomList)
+	{
+		if (m_gameRoomData->roomNum == roomList->roomNum)
+		{
+			for (auto userList : roomList->gameUserList)
+			{
+				if (m_userNum != userList->m_userNum)
+				{
+					memcpy(m_packetData->data, userList->m_playGameData, sizeof(PlayGameData));
+					m_packetData->size += static_cast <unsigned short>(sizeof(PlayGameData));
+
+					for (auto block : userList->m_blockList)
+					{
+						memcpy(m_packetData->data + m_packetData->size, block, sizeof(PlayGameData_Block));
+						m_packetData->size += static_cast <unsigned short>(sizeof(PlayGameData_Block));
+					}
+					break;
+				}
+			}
+		}
+
+		if (m_packetData->size != 0)
+		{
+			break;
+		}
+	}
+
+	if (m_packetData->size == 0)
+	{
+		PlayGameData* playGameData = new PlayGameData;
+		playGameData->userReq = USER_PLAY::PLAY_WIN;
+
+		memcpy(m_packetData->data, playGameData, sizeof(PlayGameData));
+		m_packetData->size += static_cast <unsigned short>(sizeof(PlayGameData));
+
+		SafeDelete(playGameData);
+	}
+}
+
+void PacketManager::SetPlayResultData()
+{
+	m_packetData->size = 0;
+
+	for (auto roomList : m_roomManager->m_roomList)
+	{
+		if (m_gameRoomData->roomNum == roomList->roomNum)
+		{
+			for (auto userList : roomList->gameUserList)
+			{
+				if (m_userNum != userList->m_userNum)
+				{
+					memcpy(m_packetData->data, userList->m_playGameData, sizeof(PlayGameData));
+					m_packetData->size += static_cast <unsigned short>(sizeof(PlayGameData));
+				}
+			}
+		}
+
+		if (m_packetData->size != 0)
+		{
+			break;
+		}
+	}
+
+	if (m_packetData->size == 0)
+	{
+		PlayGameData* playGameData = new PlayGameData;
+		playGameData->userReq = USER_PLAY::PLAY_IDLE;
+
+		memcpy(m_packetData->data, playGameData, sizeof(PlayGameData));
+		m_packetData->size += static_cast <unsigned short>(sizeof(PlayGameData));
+
+		SafeDelete(playGameData);
+	}
 }

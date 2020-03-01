@@ -37,9 +37,6 @@
     <Filter Include="04.Systems\01.LobbySystem">
       <UniqueIdentifier>{6197d535-0ab5-4f79-87ba-28b9805dde8e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04.Systems\03.PlayGameSystem">
-      <UniqueIdentifier>{c3545d66-6cf7-4fa3-9d99-58d60f998278}</UniqueIdentifier>
-    </Filter>
     <Filter Include="04.Systems\00.SystemFrame">
       <UniqueIdentifier>{33d1d3bc-db06-4b69-a017-e4527936e110}</UniqueIdentifier>
     </Filter>
@@ -48,6 +45,12 @@
     </Filter>
     <Filter Include="Utility\01.PacketManager">
       <UniqueIdentifier>{f2471a96-d9ab-401d-b335-0874ca84b7f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Systems\03.VersusPlaySystem">
+      <UniqueIdentifier>{c3545d66-6cf7-4fa3-9d99-58d60f998278}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Systems\04.GameResultSystem">
+      <UniqueIdentifier>{572f5ea0-abab-47ba-820a-cad9e7e812de}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -81,6 +84,12 @@
     <ClInclude Include="PacketManager.h">
       <Filter>Utility\01.PacketManager</Filter>
     </ClInclude>
+    <ClInclude Include="VersusPlaySystem.h">
+      <Filter>04.Systems\03.VersusPlaySystem</Filter>
+    </ClInclude>
+    <ClInclude Include="GameResultSystem.h">
+      <Filter>04.Systems\04.GameResultSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ServerStart.cpp">
@@ -103,6 +112,12 @@
     </ClCompile>
     <ClCompile Include="PacketManager.cpp">
       <Filter>Utility\01.PacketManager</Filter>
+    </ClCompile>
+    <ClCompile Include="VersusPlaySystem.cpp">
+      <Filter>04.Systems\03.VersusPlaySystem</Filter>
+    </ClCompile>
+    <ClCompile Include="GameResultSystem.cpp">
+      <Filter>04.Systems\04.GameResultSystem</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

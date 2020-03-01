@@ -3,10 +3,12 @@
 
 #include "RoomManager.h"
 #include "PacketManager.h"
+
 #include "SystemFrame.h"
 #include "LobbySystem.h"
 #include "GameRoomSystem.h"
-//#include "Pl"
+#include "VersusPlaySystem.h"
+#include "GameResultSystem.h"
 
 GameUser::GameUser(SOCKET socket, SOCKADDR_IN cliaddr, int userNum)
 {
@@ -49,8 +51,10 @@ void GameUser::Initialize()
 			m_systemFrame = new GameRoomSystem();
 			break;
 		case USER_STATE::USER_PLAY_GAME:
-			//m_systemFrame = new PlayGameSystem();
+			m_systemFrame = new VersusPlaySystem();
 			break;
+		case USER_STATE::USER_RESULT:
+			m_systemFrame = new GameResultSystem();
 		}
 	}
 }
@@ -115,6 +119,7 @@ unsigned int WINAPI GameUser::Communication(void* gameUser)
 	{
 	case USER_STATE::USER_GAME_ROOM:
 	case USER_STATE::USER_PLAY_GAME:
+	case USER_STATE::USER_RESULT:
 		RoomManager::getInstance()->ExitRoom(pGameUser->m_packetManager->m_userNum);
 		break;
 	}
